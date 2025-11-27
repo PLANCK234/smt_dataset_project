@@ -1,8 +1,10 @@
 # SMT Dataset Project
 
 **Author:** Guofu Tang
+
 **Advisor:** Prof. Hongce Zhang
-**Institution:** Zhejiang University
+
+**Institution:** HKUST(GZ)
 
 ## 📌 Overview
 
