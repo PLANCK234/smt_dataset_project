@@ -19,7 +19,7 @@ This repository contains:
 
 
 ## 📁 Repository Structure
-
+```
 .
 ├── SMT/                     # Original SMT-LIB benchmark files
 │   ├── README.md
@@ -35,7 +35,7 @@ This repository contains:
 ├── .github/workflows/       # CI for Lean
 └── README.md
 
-
+```
 ## Research Motivation
 
 The project explores:
