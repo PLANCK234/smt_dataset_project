@@ -1,0 +1,14 @@
+/.lake/
+/lake-packages/
+build/
+/SMT/  # 忽略整个 SMT 原题数据 (可选)
+/SMT/**
+
+*.olean
+.DS_Store
+.vscode/
+
+# editor backups
+*.swp
+*.swo
+*.tmp
