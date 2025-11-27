@@ -34,7 +34,6 @@ This repository contains:
 ├── lake-manifest.json
 ├── .github/workflows/       # CI for Lean
 └── README.md
-```
 
 
 ## Research Motivation
