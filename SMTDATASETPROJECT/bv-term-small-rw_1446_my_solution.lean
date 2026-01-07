@@ -1,11 +1,17 @@
--- a case from `small_bv_problems/bv-term-small-rw_1446.smt2`
-
+-- `small_bv_problems/bv-term-small-rw_1446.smt2`
+import Mathlib.Data.Num.Bitwise
 open BitVec
 
 variable {n : Nat}
 
+#check Num.shiftr
+
 def bv_lshr := λ (a b : BitVec n) => BitVec.ofNat n (a.toNat / (2 ^ b.toNat))
 def bv_mul := λ (a b : BitVec n) => a * b
+
+
+#check bv_lshr
+
 
 theorem nat_div_div_commutative (x y z : Nat) : x / y / z = x / z / y := by
   simp only [Nat.div_div_eq_div_mul, Nat.mul_comm]
@@ -65,7 +71,6 @@ theorem bv_lshr_comm (x y z : BitVec n) :
 
  -- (assert (not (= (bvlshr (bvlshr s (bvmul s s)) t) (bvlshr (bvlshr s t) (bvmul s s))))) is UNSAT
  -- s >> (s*s) >> t == s >> t >> (s*s)
-theorem bv_lshr_comm_example (s t : BitVec n) :
+theorem bv_term_small_rw_1446 (s t : BitVec n) :
     bv_lshr (bv_lshr s (bv_mul s s)) t =
-    bv_lshr (bv_lshr s t) (bv_mul s s) := by
-    exact bv_lshr_comm s (bv_mul s s) t
+    bv_lshr (bv_lshr s t) (bv_mul s s) := by exact bv_lshr_comm s (bv_mul s s) t
