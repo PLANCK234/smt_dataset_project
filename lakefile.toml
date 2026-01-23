@@ -10,6 +10,11 @@ weak.linter.mathlibStandardSet = true
 maxSynthPendingDepth = 3
 
 [[require]]
+name = "reap"
+git = "https://github.com/frenzymath/reap.git"
+rev = "main"
+
+[[require]]
 name = "mathlib"
 scope = "leanprover-community"
 

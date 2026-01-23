@@ -1,6 +1,6 @@
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Asymptotics.SpecificAsymptotics
-
+import Mathlib.Data.Fintype.Card
 open Filter
 
 section StolzTheoremFinity
@@ -411,3 +411,37 @@ theorem StolzNegInfinity (x : ℕ → ℝ) (y : ℕ → ℝ) (hyp_y_strictlymono
   exact h3
 
 end StolzTheoremInfinity
+
+open Finset
+
+example (m n : ℕ) (h : m ≥ n) :
+    card (range n ∪ (range n).image (fun i ↦ m + i)) = 2 * n := by
+  classical
+  have hdisj : Disjoint (range n) ((range n).image (fun i ↦ m + i)) := by
+    -- use `Finset.disjoint_left`
+    rw [Finset.disjoint_left]
+    intro a ha haimg
+    -- unpack membership in the image using `Finset.mem_image`
+    rcases (Finset.mem_image.mp haimg) with ⟨i, hi, hmi⟩
+    have ha' : a < n := Finset.mem_range.mp ha
+    have hn : n ≤ m := h
+    have hni : n ≤ m + i := le_trans hn (Nat.le_add_right m i)
+    -- from hmi : m + i = a, rewrite to get n ≤ a, contradiction with a < n
+    have : n ≤ a := by simpa [hmi] using hni
+    exact (not_lt_of_ge this) ha'
+  have hcard :
+      card (range n ∪ (range n).image (fun i ↦ m + i))
+        = card (range n) + card ((range n).image (fun i ↦ m + i)) := by
+    exact (Finset.card_union_eq_card_add_card).2 hdisj
+  -- compute card of the image
+  have hinj : Function.Injective (fun i : ℕ ↦ m + i) := by
+    intro a b hab
+    exact Nat.add_left_cancel hab
+  have himage : card ((range n).image (fun i ↦ m + i)) = card (range n) := by
+    simpa using (Finset.card_image_of_injective (s := range n) hinj)
+  -- finish
+  calc
+    card (range n ∪ (range n).image (fun i ↦ m + i))
+        = card (range n) + card ((range n).image (fun i ↦ m + i)) := hcard
+    _ = n + n := by simp [Finset.card_range, himage]
+    _ = 2 * n := by ring
