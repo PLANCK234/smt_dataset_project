@@ -1,6 +1,7 @@
 import Mathlib.Data.Real.Basic
 import Mathlib.Analysis.Asymptotics.SpecificAsymptotics
 import Mathlib.Data.Fintype.Card
+import Reap
 open Filter
 
 section StolzTheoremFinity
@@ -378,13 +379,9 @@ theorem StolzPosInfinity (x : ℕ → ℝ) (y : ℕ → ℝ) (hyp_y_strictlymono
         obtain ⟨N₂, hN₂⟩ := eventually_atTop.mp h_z_pos
         let N := max N₁ N₂
         have : (fun n ↦ z n / y n) = (fun n ↦ (y n / z n)⁻¹) := by
-            ext n; by_cases hn : n ≥ N
-            · have hy : y n > 0 := hN₁ n (le_trans (le_max_left _ _) hn)
-              have hz : z n > 0 := hN₂ n (le_trans (le_max_right _ _) hn)
-              field_simp [ne_of_gt hy, ne_of_gt hz]
-            · simp only [inv_div, z]
+          ext n;field_simp [h_z_pos, h_y_pos]
         rw [this]; exact Filter.Tendsto.inv_tendsto_nhdsGT_zero h_lim'_pos
-    exact Tendsto.congr' heq_div h_lim
+    rwa [← (tendsto_congr' heq_div)]
 
 theorem StolzNegInfinity (x : ℕ → ℝ) (y : ℕ → ℝ) (hyp_y_strictlymono : StrictMono y)
 (hyp_y_attop : Tendsto y atTop atTop)
@@ -405,7 +402,7 @@ theorem StolzNegInfinity (x : ℕ → ℝ) (y : ℕ → ℝ) (hyp_y_strictlymono
   have h3 : Tendsto (fun n ↦ z n / y n) atTop atTop
     := StolzPosInfinity z y hyp_y_strictlymono hyp_y_attop h2
   have : (fun n ↦ x n / y n) = (fun n ↦ - (z n / y n)) := by
-    ext n; simp only [z]; ring
+    ext n;simp only [neg_div, neg_neg, z]
   rw [this]
   apply Filter.tendsto_neg_atBot_iff.2
   exact h3
