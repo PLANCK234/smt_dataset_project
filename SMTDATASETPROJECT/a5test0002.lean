@@ -1,7 +1,5 @@
 import Mathlib.Data.Num.Bitwise
-import reap
 
-open Std
 
 /-- Signed interpretation (two's complement) of a bitvector. -/
 def sbv_to_int {n : Nat} (x : BitVec n) : Int :=
