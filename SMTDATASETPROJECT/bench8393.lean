@@ -21,7 +21,7 @@ theorem bench8393 : ∃ T1_125521 : BitVec 8, φ T1_125521 := by
 
 section
 
-variable (n : ℕ) (npos : 0 < n)
+variable {n : ℕ} {npos : 0 < n}
 
 theorem bench8393' {npos : 0 < n} : ∃ a : BitVec n, True ∧ (a = BitVec.ofNat n 115) ∧
   (a ≠ BitVec.ofNat n 0) := by
@@ -56,7 +56,7 @@ theorem bench8393' {npos : 0 < n} : ∃ a : BitVec n, True ∧ (a = BitVec.ofNat
 def φ' (T1_125521 : BitVec n) : Prop :=
   True ∧ (T1_125521 = BitVec.ofNat n 115) ∧ (T1_125521 ≠ BitVec.ofNat n 0)
 
-theorem bench8393'' {npos : 0 < n} : ∃ T1_125521 : BitVec n, φ' n T1_125521 := by
+theorem bench8393'' {npos : 0 < n} : ∃ T1_125521 : BitVec n, φ' T1_125521 := by
   refine ⟨BitVec.ofNat n 115, ?_⟩
   constructor
   · trivial

@@ -1,8 +1,6 @@
 -- a case from `small_bv_problems/bv-term-small-rw_1446.smt2`
 
-open BitVec
-
-variable {n : Nat}
+variable {n : Nat} {npos : 0 < n}
 
 def bv_lshr := λ (a b : BitVec n) => BitVec.ofNat n (a.toNat / (2 ^ b.toNat))
 def bv_mul := λ (a b : BitVec n) => a * b
@@ -70,7 +68,7 @@ theorem bv_lshr_comm (x y z : BitVec n) :
 
  -- (assert (not (= (bvlshr (bvlshr s (bvmul s s)) t) (bvlshr (bvlshr s t) (bvmul s s))))) is UNSAT
  -- s >> (s*s) >> t == s >> t >> (s*s)
-theorem bv_lshr_comm_example (s t : BitVec n) :
+theorem bv_term_small_rw_1446 (s t : BitVec n) :
     bv_lshr (bv_lshr s (bv_mul s s)) t =
     bv_lshr (bv_lshr s t) (bv_mul s s) := by
     exact bv_lshr_comm s (bv_mul s s) t
