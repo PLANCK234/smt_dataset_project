@@ -102,7 +102,7 @@ def re_peat {m : Nat} (i : Nat) (hi : i ≥ 1) (x : BitVec m) : BitVec (i * m) :
       simpa
   | n + 2 =>
       cast
-        (by sorry)
+        (by rw [← Nat.add_one_mul])
         (concat (re_peat (n + 1) (by omega) x) x)
 
 @[simp]
@@ -123,7 +123,7 @@ def rotate_left {m : Nat} (i : Nat) (x : BitVec m) : BitVec m :=
       x
     else
       cast
-        (by sorry
+        (by simp?
         )
         (concat
           (extract (m - k - 1) 0 x)
@@ -178,3 +178,7 @@ def msb1 {m : Nat} (s : BitVec m) : Prop := msb (m := m) s = BitVec.ofNat 1 1
 
 
 end SMT
+
+
+example (m i : ℕ) (x : BitVec m) (h : ¬m = 0) (k : ℕ := i % m) (hk : ¬k = 0) :
+  m - k - 1 + 1 + (m - 1 - (m - k) + 1) = m := by
