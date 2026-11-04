@@ -1,12 +1,17 @@
-/.lake/
-/lake-packages/
-build/
-
+# Lean build products and generated audit reports
+.lake/
 *.olean
-.DS_Store
-.vscode/
+*.ilean
+*.olean.private
+*.olean.server
 
-# editor backups
+# Python caches
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local editor and operating-system files
+.DS_Store
+Thumbs.db
 *.swp
 *.swo
-*.tmp

@@ -1,2 +1,0 @@
-import SmtQFBV.BV.Logic
-

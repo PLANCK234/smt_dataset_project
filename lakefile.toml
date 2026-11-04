@@ -1,0 +1,16 @@
+name = "bvbenchmarks"
+version = "0.1.0"
+defaultTargets = ["SMT", "LEMMAS_learned", "BV_LEAN"]
+
+[[lean_lib]]
+name = "SMT"
+globs = ["SMT.*"]
+
+# Learned mathematics depends on SMT; SMT never imports this layer.
+[[lean_lib]]
+name = "LEMMAS_learned"
+globs = ["LEMMAS_learned.*"]
+
+[[lean_lib]]
+name = "BV_LEAN"
+globs = ["BV_LEAN.*"]

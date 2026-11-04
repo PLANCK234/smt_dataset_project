@@ -1,0 +1,39 @@
+name: Lean CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Check out the project
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Build all Lean libraries and benchmarks
+        uses: leanprover/lean-action@fe408643ea7367d8c0404a8be3975bb145f5fb64 # v1
+        with:
+          auto-config: false
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: false
+      - name: Verify translation coverage
+        run: python3 scripts/qfbv_proof_status.py
+      - name: Audit benchmark proof axioms
+        run: python3 scripts/audit_qfbv_proofs.py
+      - name: Audit library axioms, provenance, and dependencies
+        run: python3 scripts/audit_library.py --output .lake/library-audit.json
+      - name: Check exact conditions at small widths
+        run: python3 scripts/classify_refuted_widths.py --max-width 16 --verify-small 7
