@@ -14,7 +14,9 @@ LEAN = ROOT / 'BV_LEAN/QF_BV/unsat'
 
 
 def collect() -> list[dict]:
-    sources = {p.stem.rsplit('_', 1)[1]: p for p in SOURCE.glob('bv-term-small-rw_*.smt2')}
+    source_files = list(SOURCE.glob('bv-term-small-rw_*.smt2'))
+    sources = {p.stem.rsplit('_', 1)[1]: p for p in source_files}
+    assert len(sources) == len(source_files), 'Duplicate source rule numbers'
     translations = {p.stem.rsplit('_', 1)[1]: p for p in LEAN.glob('bv_term_small_rw_*.lean')}
     assert sources.keys() == translations.keys(), {
         'missing': sorted(sources.keys() - translations.keys()),

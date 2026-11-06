@@ -33,6 +33,10 @@ jobs:
         run: python3 scripts/qfbv_proof_status.py
       - name: Audit benchmark proof axioms
         run: python3 scripts/audit_qfbv_proofs.py
+      - name: Audit SAT proofs and source correspondence
+        run: python3 scripts/audit_qfbv_sat.py
+      - name: Audit reclassified source correspondence
+        run: python3 scripts/audit_qfbv_unknown.py
       - name: Audit library axioms, provenance, and dependencies
         run: python3 scripts/audit_library.py --output .lake/library-audit.json
       - name: Check exact conditions at small widths

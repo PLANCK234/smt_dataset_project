@@ -4,7 +4,7 @@
 
 A Lean 4 project for formalizing SMT bit-vector operations and proving rewrite rules across arbitrary bit widths, including width zero.
 
-The project contains a local mathematical library, reusable lemmas developed from benchmark proofs, and **1,432 translated QF_BV benchmarks** from the SMT-LIB Benchmark Library family **20190311-bv-term-small-rw-Noetzli**. It uses **Lean 4.34.1** and has no external Lake package dependencies. Selected upstream proofs are extracted and attributed locally; Mathlib is not required to build the project.
+The project contains a local mathematical library, reusable lemmas developed from benchmark proofs, and **1,575 translated QF_BV benchmarks** from the SMT-LIB Benchmark Library family **20190311-bv-term-small-rw-Noetzli**. It uses **Lean 4.34.1** and has no external Lake package dependencies. Selected upstream proofs are extracted and attributed locally; Mathlib is not required to build the project.
 
 ## Quick start
 
@@ -61,9 +61,10 @@ Translated formulas use readable names such as `bvadd`, `bvand`, and `bvshl`, wi
 | --- | --- |
 | `SMT/` | SMT-compatible operations, mathematical semantics, `toNat` bridges, and base rewrite lemmas. All 51 public BV/PBV operations have mathematical bridges. |
 | `LEMMAS_learned/` | 94 reusable lemmas, organized by Nat arithmetic, bitwise operations, shifts, bounds, and exact characterizations. |
-| `BV_LEAN/QF_BV/unsat/` | 1,432 benchmark translations with proofs or refutations and conditional characterizations. |
+| `BV_LEAN/QF_BV/unsat/` | 1,486 translations, including 54 formerly unknown inputs now proved UNSAT. |
+| `BV_LEAN/QF_BV/sat/` | 89 SAT translations with exact solution conditions and checked width-32 witnesses. |
 | `BV_LEAN/QF_BV/ExactConditions.lean` | Shared arithmetic predicates used by the conditional benchmark results. |
-| `BV/QF_BV/unsat/` | The corresponding original SMT-LIB inputs, retained for attribution and translation-coverage checks. |
+| `BV/QF_BV/{sat,unsat}/` | Original SMT-LIB inputs; the 54 reclassified files retain their original unknown status labels. |
 | `scripts/` | Proof audits, library audits, width classification, and provenance maintenance. Python standard library only. |
 | `upstream.json` | Pinned upstream revisions, source hashes, and declaration-level provenance. |
 | `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` | Reproducible Lean and Lake configuration. |
@@ -78,11 +79,12 @@ The base library does not import learned lemmas, and neither library imports ben
 
 ## What is proved?
 
-The original inputs assert the negation of an equality at **width 32** and are labeled UNSAT. The Lean translations ask the stronger question whether the equality holds for **every `n : Nat`**, including `n = 0`.
+The inputs assert the negation of an equality at **width 32**. The UNSAT translations prove identities for **every `n : Nat`**, including `n = 0`, or characterize counterexamples to that generalization. All 54 originally unknown inputs are now proved UNSAT and stored in `unsat/`. The 89 SAT inputs have exact solution conditions and checked width-32 witnesses.
 
 | Result | Count |
 | --- | ---: |
-| Original all-width equalities proved | 1,413 |
+| All-width equalities proved | 1,467 |
+| SAT inputs with exact conditions and width-32 witnesses | 89 |
 | All-width generalizations refuted by checked counterexamples | 19 |
 | Unfinished original claims | 0 |
 | Exact input-level `↔` characterizations for the refuted rules | 19 |
@@ -99,12 +101,14 @@ Install **Python 3.10 or newer** to run the audit tools. No pip packages are nee
 ```sh
 python3 scripts/qfbv_proof_status.py
 python3 scripts/audit_qfbv_proofs.py
+python3 scripts/audit_qfbv_sat.py
+python3 scripts/audit_qfbv_unknown.py
 python3 scripts/audit_library.py --output .lake/library-audit.json
 python3 scripts/classify_refuted_widths.py --max-width 16 --verify-small 7
 ```
 
 - The status command checks that every original input has a corresponding translation.
-- The benchmark audit checks compiled axiom dependencies of all **1,504 public benchmark theorems**, including conditional results and counterexamples.
+- The benchmark audit checks compiled axiom dependencies of all **1,558 public UNSAT benchmark theorems**, including conditional results and counterexamples. Separate audits check the 89 SAT translations and the 54 reclassified source correspondences.
 - The library audit checks **461 indexed declarations**, including two private helpers, operator coverage, source hashes, and import boundaries.
 - Both axiom audits permit only `propext`, `Classical.choice`, and `Quot.sound`; they reject `sorryAx` and additional axioms.
 - The width classifier independently checks all 21,845 input pairs at widths 0 through 7 against the 19 refuted rules and their exact input conditions. Finite checks complement the Lean proofs.
