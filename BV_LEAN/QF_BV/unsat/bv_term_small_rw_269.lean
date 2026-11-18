@@ -15,9 +15,9 @@ open Learned.BitVec
 open _root_.BitVec (neg_zero)
 
 /-
-数学分析：
-令 b = t << t。若 b = 0，取负仍为零，两边均为 s。
-若 b ≠ 0，第 234 条的下界引理给出 (-b).toNat ≥ n，左右移均为零。
+Proof sketch:
+Let b = t << t. If b = 0, its negation is zero and both sides are s.
+If b ≠ 0, the lower bound from rule 234 gives (-b).toNat ≥ n, so both shifts are zero.
 -/
 
 theorem bv_term_small_rw_269 :

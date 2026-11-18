@@ -30,10 +30,9 @@ theorem bv_term_small_rw_270_restricted
     (bvlshr s (bvnot (bvshl t t))) = (literal n 0) := by
   exact bvlshr_large s _ (width_le_toNat_bvnot_bvshl_self t h)
 
-/- 数学分析：
-n=2 且 t=1 时内层补码为 1，外层右移为零恰当 s<2；其余情况恒为零。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+For n=2 and t=1 the inner complement is 1, and the outer right shift is zero iff s<2; otherwise it is always zero.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_270_iff (n : Nat) (s t : BitVec n) :

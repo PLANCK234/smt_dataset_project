@@ -55,10 +55,9 @@ theorem bv_term_small_rw_223_counterexample_width2 :
     bvlshr (literal 2 2) (bvnot (bvneg (literal 2 2))) ≠
       bvlshr (bvadd (literal 2 2) (literal 2 2)) (literal 2 2) := by decide
 
-/- 数学分析：
-当 a>0 时补码负值为 a-1；a>=3 时两商为零。唯一坏输入是 (n,a)=(1,1)、(2,2)。对全部输入量化后，坏位宽恰为 1、2。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+For a>0, ~(-s) has value a-1; for a>=3 both quotients are zero. The only bad inputs are (n,a)=(1,1) and (2,2), so the bad widths are exactly 1 and 2.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_223_iff (n : Nat) (s t : BitVec n) :

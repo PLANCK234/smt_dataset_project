@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（共同置位）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先模加倍 a 作为 b 的左移量；SAT 要求其结果与原 a 有共同置位，内层非零本身不充分。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (common set bits):
+b is shifted left by 2a mod P. SAT needs a common set bit with a; a nonzero inner value is not enough.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

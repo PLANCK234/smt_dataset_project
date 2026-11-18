@@ -15,10 +15,10 @@ open Learned.BitVec
 open _root_.BitVec (neg_zero)
 
 /-
-数学分析：
-利用双重取负与左移交换，将 t << (-t) 改写成 -((-t) << (-t))。
-令 b = (-t) << (-t)。b 为零时两边为 s；
-b 非零时，已有自移位取负下界给出 (-b).toNat ≥ n，因此两边均为零。
+Proof sketch:
+Negation commutes with left shift, so t << (-t) = -((-t) << (-t)).
+Let b = (-t) << (-t). If b = 0 both sides are s;
+otherwise the negated self-shift bound gives (-b).toNat ≥ n, so both sides are zero.
 -/
 
 theorem bv_term_small_rw_359 :

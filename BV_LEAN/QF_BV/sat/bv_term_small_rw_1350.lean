@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（顺序右移自然和）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-顺序右移的有效计数是自然和 b+(P-1-a)，无位向量回绕；另一侧计数是 OR。用自然计数的右移差异判据。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (natural sum of sequential right-shift counts):
+The sequential right shifts have the natural count b+(P-1-a), without wraparound; the other count is an OR. Apply the right-shift difference criterion to the natural counts.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

@@ -15,9 +15,9 @@ open Learned.BitVec
 open _root_.BitVec (neg_zero)
 
 /-
-数学分析：
-左移与取负交换：(-t) << t = -(t << t)。
-再令 b = t << t；b 为零时两边为 s，非零时移位量至少为 n，两边为零。
+Proof sketch:
+Left shift commutes with negation: (-t) << t = -(t << t).
+Let b = t << t. If b = 0 both sides are s; otherwise the count is at least n and both sides are zero.
 -/
 
 theorem bv_term_small_rw_641 :

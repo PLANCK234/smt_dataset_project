@@ -30,10 +30,9 @@ theorem bv_term_small_rw_238_restricted
     (bvshl s (bvnot (bvshl s s))) = (literal n 0) := by
   exact bvshl_large s _ (width_le_toNat_bvnot_bvshl_self s h)
 
-/- 数学分析：
-除 n=2 外，补码自移位量至少为 n。n=2 的唯一非零结果来自 s=1，故输入条件和位宽条件各有精确例外。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+Except at n=2, the complemented self-shift count is at least n. At n=2 the only nonzero result comes from s=1, the single exception.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_238_iff (n : Nat) (s t : BitVec n) :

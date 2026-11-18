@@ -14,10 +14,10 @@ open SMT.BitVec
 open Learned.BitVec
 
 /-
-数学分析：
-令 a = s.toNat，q = (t >> s).toNat。s 或 q 为零时直接化简。
-非零分支满足 q*2^a ≤ t.toNat < 2^n，因此 q << s 不溢出，且至少为 2^a > a，
-左侧右移为零。负商下界给出 (-q).toNat ≥ n，右侧同样为零。
+Proof sketch:
+Let a = s.toNat and q = (t >> s).toNat. If s or q is zero, simplify directly.
+Otherwise q*2^a ≤ t.toNat < 2^n, so q << s does not overflow and is at least 2^a > a;
+the left side is zero. The negated-quotient bound gives (-q).toNat ≥ n, so the right side is zero.
 -/
 
 theorem bv_term_small_rw_723 :

@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（共同右移的高位差异）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先分别计算 a+(a AND b)、a+b 的模和，再共同右移 b；差异必须出现在未被右移丢弃的高位。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (high-bit difference under a common right shift):
+(a+(a AND b)) mod P and (a+b) mod P are both shifted right by b; a difference must survive in the high bits.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

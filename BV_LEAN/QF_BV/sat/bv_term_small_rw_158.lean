@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（顺序左移的计数重叠）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-顺序左移的计数和等于 OR 加 AND；AND 非零且按 OR 左移后仍非零，恰好构成解。正次数左移没有非零不动点。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (overlapping counts of sequential left shifts):
+Sequential left shifts add their counts, and the sum is OR + AND. Solutions are exactly AND ≠ 0 with a nonzero shift by the OR count; a positive left shift has no nonzero fixed point.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

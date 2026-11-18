@@ -87,37 +87,25 @@ for kind,base,p in files:
         notices += ['## '+kind+': '+p.relative_to(base).as_posix()+'\n','```text\n'+notice[1].strip()+'\n```\n']
 (root/'THIRD_PARTY_NOTICES.md').write_text('\n'.join(notices))
 index = [
-    '# BV / PBV 运算索引\n',
-    '全部 51 个当前公开运算及其数学桥接。命名空间均为 `SMT.BitVec`。',
-    '符号宽度使用、依赖和来源规范见 [UPSTREAM.md](../../UPSTREAM.md)。\n',
-    'Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。',
-    '有符号运算通过 `signedValue` 使用 Int，不会丢弃符号。\n',
+    '# BV / PBV operation index\n',
+    'All 51 public operations and their `toNat` bridges, in namespace `SMT.BitVec`.',
+    'Semantic conventions and provenance: [UPSTREAM.md](../../UPSTREAM.md).\n',
+    'Bridges for Bool-valued operations are usually named `*_toNat`; for BV-valued ones, `toNat_*`.',
+    'Signed operations go through `signedValue : Int`.\n',
 ]
 for category in bridges:
     index += [f'## {category}\n',
-              f'按需导入 `SMT.BitVec.ToNat.{category}`。\n',
-              '| 运算 | 桥接定理 |', '| --- | --- |']
+              f'`import SMT.BitVec.ToNat.{category}`\n',
+              '| Operation | Bridge |', '| --- | --- |']
     for operation, theorem in bridges[category].items():
         index.append(f'| [`{operation}`]({category}.lean) | [`{theorem}`](ToNat/{category}.lean) |')
     index.append('')
-index += ['## 重写规则\n', '按需 import 以下模块，使用 `rw` 或 `simp only`。\n']
+index += ['## Rewrites\n', 'Import a module and apply its lemmas with `rw` or `simp only`.\n']
 for path in sorted((root/'SMT/BitVec/Rewrite').glob('*.lean')):
     names = [r['name'].split('.')[-1] for r in records if r['file'] == path.relative_to(root).as_posix()]
     index += [f'### [Rewrite.{path.stem}](Rewrite/{path.name})\n',
               ', '.join(f'`{name}`' for name in names) + '\n']
-index += ['## Nat 辅助库\n',
-          'Nat 位测试、位运算、掩码和数值辅助定理见 [SMT.Nat 索引](../Nat/INDEX.md)。\n']
+index += ['## Nat helpers\n',
+          'Bit tests, bitwise operations, masks, and numeric lemmas on Nat are in [SMT/Nat](../Nat/).\n']
 (root/'SMT/BitVec/INDEX.md').write_text('\n'.join(index))
-nat_index = ['# SMT.Nat 声明索引\n',
-             '所有声明都在 `SMT.Nat` 命名空间。每个文件可单独 import；',
-             '模块依赖和来源说明见 [UPSTREAM.md](../../UPSTREAM.md)。\n']
-for path in sorted((root/'SMT/Nat').glob('*.lean')):
-    nat_index += [f'## [{path.stem}]({path.name})\n',
-                  f'`import SMT.Nat.{path.stem}`\n',
-                  '| 声明 | 种类 |', '| --- | --- |']
-    for row in records:
-        if row['file'] == path.relative_to(root).as_posix():
-            nat_index.append(f"| `{row['name'].split('.')[-1]}` | {row['kind']} |")
-    nat_index.append('')
-(root/'SMT/Nat/INDEX.md').write_text('\n'.join(nat_index))
 print(len(operations),'operator bridges;',len(records),'local declaration records;',len(sources),'pinned source files')

@@ -62,10 +62,9 @@ theorem bv_term_small_rw_473_width_restricted
         (Nat.lt_trans (lt_toNat_bvshl_of_ne_zero s t hb) Nat.lt_two_pow_self)
       rw [hl, hr]
 
-/- 数学分析：
-内层 b=t<<s非零时左侧恒为零，故充要条件为 s&(t>>b)=0；这正是 458 的交换输入判据。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+If b=t<<s is nonzero the left side is zero, so the condition is s&(t>>b)=0: the criterion of 458 with the inputs swapped.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_473_iff (n : Nat) (s t : BitVec n) :

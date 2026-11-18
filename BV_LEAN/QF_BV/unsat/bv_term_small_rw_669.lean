@@ -62,10 +62,9 @@ theorem bv_term_small_rw_669_width_restricted
     have hd := Learned.Nat.not_two_pow_dvd_self_shift_of_pow_width k s.toNat (by omega) hlt
     simpa only [show 2 ^ n = 2 ^ (2 ^ k) by rw [hw]] using hd
 
-/- 数学分析：
-s=0 或 s>=n 时成立；0<s<n 时，全一内层清空左侧，右侧恰在自移位非零时也为零，得到整除条件的必要性。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+The identity holds for s=0 or s>=n. For 0<s<n the all-ones inner value clears the left side, and the right side is zero iff the self-shift is nonzero, which proves the divisibility condition necessary.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_669_iff (n : Nat) (s t : BitVec n) :

@@ -57,10 +57,9 @@ theorem bv_term_small_rw_458_width_restricted
       have hz := bvand_bvshl_bvshl_swap_of_pow_width n k hw s t hb
       rw [hz, hy, bvand_zero]
 
-/- 数学分析：
-内层 b=s<<t=0 时等式恒真；b非零时 t>>b=0，目标等价于 s&(t<<b)=0，再移掩码得到 t&(s>>b)=0。无需假设内层无截断。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+If b=s<<t is zero the identity holds. Otherwise t>>b=0, and the goal is s&(t<<b)=0, i.e. t&(s>>b)=0. No assumption about inner truncation is needed.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_458_iff (n : Nat) (s t : BitVec n) :

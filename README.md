@@ -2,50 +2,81 @@
 
 [![Lean CI](https://github.com/PLANCK234/smt_dataset_project/actions/workflows/lean.yml/badge.svg)](https://github.com/PLANCK234/smt_dataset_project/actions/workflows/lean.yml)
 
-A Lean 4 project for formalizing SMT bit-vector operations and proving rewrite rules across arbitrary bit widths, including width zero.
+Lean 4 proofs that the bit-vector rewrite rules of the SMT-LIB family
+**20190311-bv-term-small-rw-Noetzli** hold at **every** bit width, including zero, or exact
+characterizations of where they fail.
 
-The project contains a local mathematical library, reusable lemmas developed from benchmark proofs, and **1,575 translated QF_BV benchmarks** from the SMT-LIB Benchmark Library family **20190311-bv-term-small-rw-Noetzli**. It uses **Lean 4.34.1** and has no external Lake package dependencies. Selected upstream proofs are extracted and attributed locally; Mathlib is not required to build the project.
+The family's 1,575 benchmarks come from CVC4's syntax-guided rewrite enumeration
+(Noetzli et al., SAT 2019). Each benchmark asserts `l ≠ r` for a candidate rule `l = r` over two
+32-bit variables, using `bvadd`, `bvmul`, `bvneg`, `bvnot`, `bvand`, `bvor`, `bvshl`, and `bvlshr`.
 
-## Quick start
+## Results
 
-Install [elan, the Lean toolchain manager](https://github.com/leanprover/elan#installation), and Git. On Linux, macOS, or WSL:
+| Result | Count |
+| --- | ---: |
+| UNSAT inputs whose equality is proved for all widths `n` | 1,467 |
+| UNSAT inputs that fail at other widths, with exact input-level and width-level `↔` conditions | 19 |
+| SAT inputs with an exact BitVec-free solution set and a checked width-32 witness | 89 |
+| Unfinished | 0 |
+
+The 1,486 UNSAT inputs include 54 labeled `unknown` in SMT-LIB; all 54 are proved. The source files keep
+their original labels. An UNSAT result at width 32 is not by itself a proof for other widths, so each
+benchmark is restated over `n : Nat`.
+
+## Significance
+
+**What this adds**
+
+- **Width-independence of solver rewrites.** Solvers apply these rules at whatever width they meet,
+  but the rules were only checked at width 32. 1,467 hold for all widths. 19 do not: for example,
+  296/298/379/380 fail exactly when some `e ≤ n` has `e + ν₂(e) = n`, and 301/477 hold at 32 but fail
+  at 8 and 64. Each failure comes with the exact condition, which is the precise side condition for a
+  sound conditional rewrite. See [EXACT_CONDITIONS.md](BV_LEAN/QF_BV/EXACT_CONDITIONS.md).
+- **Exact SAT solution sets.** For the 89 rules that are false at width 32, the inputs where `l ≠ r`
+  are characterized exactly, not just witnessed.
+- **A dependency-free SMT-LIB BV semantics in Lean.** It covers all 51 BV/PBV operations, with SMT-LIB
+  division by zero, width 0, and `toNat` bridges. It can serve as a verification back end for other
+  BV transformations.
+
+**What it does not do**
+
+- These are equivalence-preserving term rewrites from a 2018 enumeration. Rewrites of this kind are
+  well studied, and most proofs here close with `simp` (about 93% are under 30 lines).
+- The instances are easy for solvers. Nothing here measures or improves solver search, and there are
+  no equisatisfiable transformations (variable elimination, invertibility conditions, width reduction).
+  Those would be stated as `(∃ x, φ) ↔ (∃ x', ψ)` with model reconstruction; `SMT/` and the SAT
+  solution-set machinery are the natural starting points.
+
+## Layout
+
+| Path | Content |
+| --- | --- |
+| `SMT/` | Base library: operation semantics, `toNat` bridges, base rewrites ([index](SMT/BitVec/INDEX.md), [conventions](UPSTREAM.md)) |
+| `LEMMAS_learned/` | 94 general lemmas extracted from benchmark proofs ([list](LEMMAS_learned/README.md)) |
+| `BV_LEAN/QF_BV/unsat/` | 1,486 all-width proofs and refutations |
+| `BV_LEAN/QF_BV/sat/` | 89 exact solution sets |
+| `BV_LEAN/QF_BV/*.lean` | Shared predicates and helpers for the benchmark proofs |
+| `BV/QF_BV/` | Original SMT-LIB inputs |
+| `scripts/` | Audits (Python standard library only) |
+
+Dependencies point one way: benchmarks → `LEMMAS_learned` → `SMT` → Lean `Init`. There are no Lake
+package dependencies; selected Mathlib proofs are extracted and attributed locally.
+
+## Build
+
+Install [elan](https://github.com/leanprover/elan#installation); it reads `lean-toolchain`
+(Lean 4.34.1). Then:
 
 ```sh
-curl -sSf https://elan.lean-lang.org/elan-init.sh | sh -s -- -y --default-toolchain none
-. "$HOME/.elan/env"
-```
-
-Clone the repository and build it from the repository root:
-
-```sh
-git clone https://github.com/PLANCK234/smt_dataset_project.git
-cd smt_dataset_project
-lake build
-```
-
-Elan reads `lean-toolchain` and downloads the pinned toolchain when needed. `lake build` checks the libraries and every translated benchmark. A successful build ends with `Build completed successfully`.
-
-For Windows, follow elan's Windows installation instructions, or use the WSL commands above. In VS Code, install the **Lean 4** extension (`leanprover.lean4`) and open the repository root to inspect goals and proofs interactively.
-
-## Build and inspect proofs
-
-Build only the mathematical libraries:
-
-```sh
-lake build SMT LEMMAS_learned
-```
-
-After building, check an individual benchmark:
-
-```sh
+lake build                     # libraries and all benchmarks
+lake build SMT LEMMAS_learned  # libraries only
 lake env lean BV_LEAN/QF_BV/unsat/bv_term_small_rw_234.lean
 ```
 
-To use a learned lemma, import its topic module:
+Example use of a learned lemma:
 
 ```lean
 import LEMMAS_learned.BitVec.Shift.Conditions
-
 open SMT.BitVec Learned.BitVec
 
 example (x y : BitVec n) :
@@ -53,90 +84,25 @@ example (x y : BitVec n) :
   bvshl_eq_zero_iff_dvd x y
 ```
 
-Translated formulas use readable names such as `bvadd`, `bvand`, and `bvshl`, with their namespaces opened explicitly.
-
-## Project structure
-
-| Path | Purpose |
-| --- | --- |
-| `SMT/` | SMT-compatible operations, mathematical semantics, `toNat` bridges, and base rewrite lemmas. All 51 public BV/PBV operations have mathematical bridges. |
-| `LEMMAS_learned/` | 94 reusable lemmas, organized by Nat arithmetic, bitwise operations, shifts, bounds, and exact characterizations. |
-| `BV_LEAN/QF_BV/unsat/` | 1,486 translations, including 54 formerly unknown inputs now proved UNSAT. |
-| `BV_LEAN/QF_BV/sat/` | 89 SAT translations with exact solution conditions and checked width-32 witnesses. |
-| `BV_LEAN/QF_BV/ExactConditions.lean` | Shared arithmetic predicates used by the conditional benchmark results. |
-| `BV/QF_BV/{sat,unsat}/` | Original SMT-LIB inputs; the 54 reclassified files retain their original unknown status labels. |
-| `scripts/` | Proof audits, library audits, width classification, and provenance maintenance. Python standard library only. |
-| `upstream.json` | Pinned upstream revisions, source hashes, and declaration-level provenance. |
-| `lean-toolchain`, `lakefile.toml`, `lake-manifest.json` | Reproducible Lean and Lake configuration. |
-
-The mathematical dependency direction is:
-
-```text
-Benchmark proofs → LEMMAS_learned → SMT mathematical modules → Lean Init
-```
-
-The base library does not import learned lemmas, and neither library imports benchmarks. The optional `SMT.QFBV` entry point also exposes the toolchain's bundled bit-vector decision tactic.
-
-## What is proved?
-
-The inputs assert the negation of an equality at **width 32**. The UNSAT translations prove identities for **every `n : Nat`**, including `n = 0`, or characterize counterexamples to that generalization. All 54 originally unknown inputs are now proved UNSAT and stored in `unsat/`. The 89 SAT inputs have exact solution conditions and checked width-32 witnesses.
-
-| Result | Count |
-| --- | ---: |
-| All-width equalities proved | 1,467 |
-| SAT inputs with exact conditions and width-32 witnesses | 89 |
-| All-width generalizations refuted by checked counterexamples | 19 |
-| Unfinished original claims | 0 |
-| Exact input-level `↔` characterizations for the refuted rules | 19 |
-| Exact all-input width-level `↔` characterizations for the refuted rules | 19 |
-
-The 19 refuted files preserve the original proposition and its counterexample, then prove corrected conditions. An UNSAT label on a width-32 input is not itself a proof of an arbitrary-width statement.
-
-The exact width theorems are formalized using the arithmetic predicates in `ExactConditions.lean`. Further valuation-based simplifications and quantifier elimination for some width conditions are described mathematically in the [exact-condition notes](BV_LEAN/QF_BV/EXACT_CONDITIONS.md), but are not all separately formalized in Lean. The notes identify that boundary explicitly.
-
 ## Verification
 
-Install **Python 3.10 or newer** to run the audit tools. No pip packages are needed. After `lake build`:
+After `lake build` (Python 3.10+):
 
 ```sh
-python3 scripts/qfbv_proof_status.py
-python3 scripts/audit_qfbv_proofs.py
-python3 scripts/audit_qfbv_sat.py
-python3 scripts/audit_qfbv_unknown.py
+python3 scripts/qfbv_proof_status.py      # every input has a translation
+python3 scripts/audit_qfbv_proofs.py      # compiled axioms of all UNSAT theorems
+python3 scripts/audit_qfbv_sat.py         # SAT translations match their sources
+python3 scripts/audit_qfbv_unknown.py     # the 54 reclassified inputs match their sources
 python3 scripts/audit_library.py --output .lake/library-audit.json
 python3 scripts/classify_refuted_widths.py --max-width 16 --verify-small 7
 ```
 
-- The status command checks that every original input has a corresponding translation.
-- The benchmark audit checks compiled axiom dependencies of all **1,558 public UNSAT benchmark theorems**, including conditional results and counterexamples. Separate audits check the 89 SAT translations and the 54 reclassified source correspondences.
-- The library audit checks **461 indexed declarations**, including two private helpers, operator coverage, source hashes, and import boundaries.
-- Both axiom audits permit only `propext`, `Classical.choice`, and `Quot.sound`; they reject `sorryAx` and additional axioms.
-- The width classifier independently checks all 21,845 input pairs at widths 0 through 7 against the 19 refuted rules and their exact input conditions. Finite checks complement the Lean proofs.
+The axiom audits allow only `propext`, `Classical.choice`, and `Quot.sound`. The last command checks the
+19 exact conditions on every input at widths 0–7. CI runs all of these.
 
-Generated audit reports and compiled files stay under `.lake/`. GitHub Actions runs the build and these checks on pushes and pull requests.
+## License
 
-## Mathematical references and provenance
-
-The following detailed notes are currently in Chinese:
-
-- [Base-library structure, semantics, and provenance](UPSTREAM.md)
-- [Bit-vector operation index](SMT/BitVec/INDEX.md)
-- [Nat declaration index](SMT/Nat/INDEX.md)
-- [Learned lemma categories](LEMMAS_learned/README.md)
-- [Exact conditions for the 19 refuted generalizations](BV_LEAN/QF_BV/EXACT_CONDITIONS.md)
-
-Each translated file identifies its source library, benchmark family, original `.smt2` filename, and license. Upstream library code is pinned and attributed through source headers, `upstream.json`, and [third-party notices](THIRD_PARTY_NOTICES.md).
-
-To refresh provenance after editing library declarations, provide a source checkout matching the Mathlib revision recorded in `upstream.json`:
-
-```sh
-python3 scripts/update_upstream.py --mathlib-source /path/to/pinned-mathlib
-```
-
-That command checks source hashes and updates metadata; it does not install Mathlib or change proofs.
-
-## Contributing and licenses
-
-Keep generally reusable mathematics in the appropriate library module and benchmark-specific proof steps in their benchmark file. Include source attribution for extracted or adapted results, cover width zero where the statement allows it, and run the build and audits before submitting a change.
-
-The mathematical library code is licensed under [Apache-2.0](LICENSE), with upstream notices preserved. The original SMT-LIB benchmark files declare [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); translations retain their source attribution. Consult file headers and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for provenance.
+Library code: [Apache-2.0](LICENSE). Upstream notices are in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md), and pinned sources are in [upstream.json](upstream.json).
+The SMT-LIB benchmarks are [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); each translation
+names its source file.

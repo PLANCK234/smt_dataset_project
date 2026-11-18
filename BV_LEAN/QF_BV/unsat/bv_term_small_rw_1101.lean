@@ -59,10 +59,9 @@ theorem bv_term_small_rw_1101_width_restricted
         simp [bvlshr, literal]
       rw [hr, hy, bvand_zero]
 
-/- 数学分析：
-内层 b=s<<t非零时右侧恒为零，故充要条件正是左侧掩码为空；与 458 具有相同的输入及位宽判据。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+If b=s<<t is nonzero the right side is zero, so the condition is that the left mask is empty; the criteria are those of 458.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_1101_iff (n : Nat) (s t : BitVec n) :

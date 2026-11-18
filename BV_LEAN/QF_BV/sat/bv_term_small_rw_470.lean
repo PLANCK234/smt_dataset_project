@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（左右移整除）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-左移 b 与 b 本身的共同置位构成 q，再判断 a 的左右移；计数为零时无解。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (left/right shift divisibility):
+q is the common set bits of b and a left shift of b; the left and right shifts of a by q are compared. A zero count gives no solution.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

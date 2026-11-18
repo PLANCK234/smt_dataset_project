@@ -17,12 +17,12 @@ open SMT.BitVec
 open Learned.BitVec
 
 /-
-数学分析：
-令 a = s.toNat。若 a ≥ n，两侧相应的移位均被清零。
-若 a < n，由 a^2 < 2^(a+1) ≤ 2^n 以及 2a < 2^n，平方移位量与倍增加法均不溢出。
-分别检查 a = 0、1、2：结果依次为 0、1、0；a = 1 分支已有 n ≥ 2。
-若 a ≥ 3，由 2(a-1) ≤ 2^(a-1) 得 2a < 2^a，故右侧倍增后右移为零。
-又 a^2 ≥ 2a，而 (s << s).toNat ≤ a*2^a < 2^(2a) ≤ 2^(a^2)，左侧也为零。
+Proof sketch:
+Let a = s.toNat. If a ≥ n, the shifts clear both sides.
+If a < n, then a^2 < 2^(a+1) ≤ 2^n and 2a < 2^n, so neither the squared count nor the doubling overflows.
+For a = 0, 1, 2 the results are 0, 1, 0; the a = 1 case has n ≥ 2.
+If a ≥ 3, 2(a-1) ≤ 2^(a-1) gives 2a < 2^a, so the right side is zero.
+Also a^2 ≥ 2a and (s << s).toNat ≤ a*2^a < 2^(2a) ≤ 2^(a^2), so the left side is zero.
 -/
 
 theorem bv_term_small_rw_1259 :

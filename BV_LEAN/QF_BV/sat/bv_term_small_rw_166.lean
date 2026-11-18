@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（左移模差）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-左边先右移截掉低位再左移，右边先左移截掉高位再右移。两种截断不交换；模差判据同时保留这两种信息损失。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (modular difference of left shifts):
+The left side drops low bits (right, then left shift); the right side drops high bits (left, then right shift). The truncations do not commute; the modular difference criterion keeps both losses.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

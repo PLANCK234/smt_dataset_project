@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（模乘积差）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先掩码再乘 b，与先乘 b 再掩码的进位行为不同；左侧乘积的模差条件精确检查右侧目标。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (modular product difference):
+Masking before multiplying by b carries differently from masking after; the modular difference condition tests the left product against the right target.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

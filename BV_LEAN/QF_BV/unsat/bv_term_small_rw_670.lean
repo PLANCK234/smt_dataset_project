@@ -63,10 +63,9 @@ theorem bv_term_small_rw_670_width_restricted
     have hd := Learned.Nat.not_two_pow_dvd_self_shift_of_pow_width k s.toNat (by omega) hlt
     simpa only [show 2 ^ n = 2 ^ (2 ^ k) by rw [hw]] using hd
 
-/- 数学分析：
-同 669：0<s<n 时左侧为零，而右侧是 s 或零，故自移位非零既充分又必要。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+As in 669: for 0<s<n the left side is zero and the right side is s or zero, so a nonzero self-shift is necessary and sufficient.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_670_iff (n : Nat) (s t : BitVec n) :

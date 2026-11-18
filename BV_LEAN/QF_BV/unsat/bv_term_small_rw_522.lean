@@ -55,10 +55,9 @@ theorem bv_term_small_rw_522_width_restricted
     have hd := Learned.Nat.not_two_pow_dvd_self_shift_of_pow_width k t.toNat (by omega) hlt
     simpa only [show 2 ^ n = 2 ^ (2 ^ k) by rw [hw]] using hd
 
-/- 数学分析：
-内层 t<<t 非零时有效移位量为零；内层为零时，完整条件是 ShiftBalanced(n,s,t)。对所有 s 量化后，恰好排除 0<t<n 且自移位为零。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+If t<<t is nonzero the effective count is zero; otherwise the exact condition is ShiftBalanced(n,s,t). Over all s, this excludes exactly 0<t<n with a zero self-shift.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_522_iff (n : Nat) (s t : BitVec n) :

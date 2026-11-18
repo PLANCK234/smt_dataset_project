@@ -59,10 +59,9 @@ theorem bv_term_small_rw_1343_width_restricted
         simp [bvlshr, literal]
       rw [bvlshr_bvand, hy, bvand_comm, bvand_zero, hr]
 
-/- 数学分析：
-内层 b=t<<s非零时 s>>b=0，故左侧恒零，完整条件与 473 相同。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+If b=t<<s is nonzero then s>>b=0 and the left side is zero; the exact condition is that of 473.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_1343_iff (n : Nat) (s t : BitVec n) :

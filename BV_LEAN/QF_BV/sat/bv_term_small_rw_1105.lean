@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（模乘积差）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-共同移位量是 c=L(b,a)，两商随后分别乘 b、a 并模 P；不能直接交换乘法与右移，用模差刻画失配。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (modular product difference):
+Both quotients use the count c=L(b,a) and are then multiplied by b and a mod P. Multiplication and right shift do not commute; the modular difference characterizes the mismatch.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

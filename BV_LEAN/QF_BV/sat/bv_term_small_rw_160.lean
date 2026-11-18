@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（商区间补集）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先算模乘积 U=ab mod P 与目标 V=bR(a,b) mod P。右移 U 等于 V 恰在 U 落入 V 的二幂商区间时；解是该区间的补集。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (outside a quotient interval):
+Let U=ab mod P and V=b*R(a,b) mod P. The right shift of U equals V iff U lies in the power-of-two quotient interval of V; solutions are its complement.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

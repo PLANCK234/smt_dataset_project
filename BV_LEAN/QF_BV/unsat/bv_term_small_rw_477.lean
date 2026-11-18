@@ -47,10 +47,9 @@ theorem bv_term_small_rw_477_counterexample_width10 :
       bvlshr (literal 10 1)
         (bvlshr (literal 10 515) (bvmul (literal 10 515) (literal 10 515))) := by decide
 
-/- 数学分析：
-固定内层 t 时，所有外层 s 都成立当且仅当 q=0 或 q>=n；对固定 s 还存在额外相等位模式，完整条件是 ShiftBalanced。位宽条件是小平方余数的根不落入禁区。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+For fixed t, all outer s satisfy the identity iff q=0 or q>=n. For fixed s, further balanced patterns exist, so the exact condition is ShiftBalanced. The width condition: square roots of small residues avoid a forbidden interval.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_477_iff (n : Nat) (s t : BitVec n) :

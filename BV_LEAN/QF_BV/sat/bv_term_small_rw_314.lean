@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（共同掩码下的差异）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先算 q=R(a,b)，再比较 a 掩码下的左、右移；只保留 XOR 差异中被 a 选中的位。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (difference under a common mask):
+With q=R(a,b), the left and right shifts are compared under the mask a; only XOR bits selected by a matter.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

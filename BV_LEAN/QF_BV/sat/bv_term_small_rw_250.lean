@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（不同计数右移）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先取 c=R(b,a)，两个计数为 (-c) mod P 与 c。c=0 时两计数相同，不会进入解集。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (right shifts by different counts):
+With c=R(b,a), the counts are (-c) mod P and c; c=0 makes them equal and gives no solution.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

@@ -14,11 +14,11 @@ open SMT.BitVec
 open Learned.BitVec
 
 /-
-数学分析：
-令 a = s.toNat，q = (t >> s).toNat。s 或 q 为零时直接化简。
-其余分支 q > 0，且 q*2^a ≤ t.toNat < 2^n。由 a < 2^a 得 a*q < 2^n，
-故 BV 乘积 s*q 不溢出且数值至少为 a，左侧右移为零。
-右移量为正使 q 位于数值范围的下半区，负商下界给出 (-q).toNat ≥ n，右侧也为零。
+Proof sketch:
+Let a = s.toNat and q = (t >> s).toNat. If s or q is zero, simplify directly.
+Otherwise q > 0 and q*2^a ≤ t.toNat < 2^n. Since a < 2^a, a*q < 2^n,
+so s*q does not overflow and is at least a; the left side is zero.
+A positive shift puts q in the lower half of the range, and the negated-quotient bound gives (-q).toNat ≥ n, so the right side is zero.
 -/
 
 theorem bv_term_small_rw_321 :

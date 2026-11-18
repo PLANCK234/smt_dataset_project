@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（掩码缺失位）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先左移 a 得到右移量，再检查右移商是否丢失于 a 的掩码；缺失位掩码非零是充要条件。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (bits missing from a mask):
+A left shift by a gives the right-shift count. SAT iff the quotient has bits outside the mask a.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

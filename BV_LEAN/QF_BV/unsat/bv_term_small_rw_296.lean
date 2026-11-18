@@ -52,10 +52,9 @@ theorem bv_term_small_rw_296_width_restricted
     have hh := bvshl_bvnot_self_ne_top_of_pow_width n k hw s
     simpa only [toNat_bvshl, toNat_bvnot] using hh
 
-/- 数学分析：
-两内层移位量均为零或至少为位宽，后者等于前者加倍。唯一失效图案是前者仅最高位为 1；它还迫使 s 非零。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+Both inner counts are 0 or at least n, and the second is twice the first mod 2^n. The only failing pattern is the first count being just the top bit, which forces s≠0.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_296_iff (n : Nat) (s t : BitVec n) :

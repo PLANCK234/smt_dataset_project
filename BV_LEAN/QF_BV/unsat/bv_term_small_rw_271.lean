@@ -30,10 +30,9 @@ theorem bv_term_small_rw_271_restricted
     (bvshl s (bvnot (bvshl t t))) = (literal n 0) := by
   exact bvshl_large s _ (width_le_toNat_bvnot_bvshl_self t h)
 
-/- 数学分析：
-n=2 且 t=1 时外层左移 1 位，结果为零恰当 s 为偶数；其余情况恒为零。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+For n=2 and t=1 the outer shift is left by 1, which is zero iff s is even; otherwise it is always zero.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_271_iff (n : Nat) (s t : BitVec n) :

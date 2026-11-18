@@ -60,10 +60,9 @@ theorem bv_term_small_rw_719_width_restricted
     have hd := Learned.Nat.not_two_pow_dvd_self_shift_of_pow_width k s.toNat (by omega) hlt
     simpa only [show 2 ^ n = 2 ^ (2 ^ k) by rw [hw]] using hd
 
-/- 数学分析：
-原自移位条件仅充分。若 s<<s=0，只需 t<<s=0 也成立；完整条件还包括 s=0。对所有 t 量化时，取 t=1 排除每个坏 s。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+The original self-shift condition is only sufficient: if s<<s=0 it is enough that t<<s=0, and s=0 also works. Over all t, t=1 rules out every bad s.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_719_iff (n : Nat) (s t : BitVec n) :

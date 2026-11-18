@@ -47,10 +47,9 @@ theorem bv_term_small_rw_301_counterexample_width10 :
       bvlshr (literal 10 515)
         (bvlshr (literal 10 515) (bvmul (literal 10 515) (literal 10 515))) := by decide
 
-/- 数学分析：
-有效移位量 q=s.toNat/2^r，r 为平方余数。q 在 1..n-1 中时仍可能相等，例如 n=6,s=34。用精确整除式 ShiftBalanced 保留所有这些位模式；位宽条件枚举小平方余数的模根。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+The effective count is q=s.toNat/2^r, with r the square residue. Equality can hold for q in 1..n-1 (e.g. n=6, s=34), so the exact condition is ShiftBalanced; the width condition enumerates square roots of small residues.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_301_iff (n : Nat) (s t : BitVec n) :

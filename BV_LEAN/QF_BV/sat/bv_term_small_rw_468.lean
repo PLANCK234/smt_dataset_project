@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（不同计数右移）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-q=b AND L(b,a)、r=b AND R(b,a)；外层右移严格区分不同计数的范围正是 a 达到较小阈值的范围。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (right shifts by different counts):
+With q=b AND L(b,a) and r=b AND R(b,a), the outer right shifts differ exactly when a reaches the smaller threshold.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

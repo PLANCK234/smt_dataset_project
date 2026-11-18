@@ -1,24 +1,24 @@
-# BV / PBV 运算索引
+# BV / PBV operation index
 
-全部 51 个当前公开运算及其数学桥接。命名空间均为 `SMT.BitVec`。
-符号宽度使用、依赖和来源规范见 [UPSTREAM.md](../../UPSTREAM.md)。
+All 51 public operations and their `toNat` bridges, in namespace `SMT.BitVec`.
+Semantic conventions and provenance: [UPSTREAM.md](../../UPSTREAM.md).
 
-Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。
-有符号运算通过 `signedValue` 使用 Int，不会丢弃符号。
+Bridges for Bool-valued operations are usually named `*_toNat`; for BV-valued ones, `toNat_*`.
+Signed operations go through `signedValue : Int`.
 
 ## Basic
 
-按需导入 `SMT.BitVec.ToNat.Basic`。
+`import SMT.BitVec.ToNat.Basic`
 
-| 运算 | 桥接定理 |
+| Operation | Bridge |
 | --- | --- |
 | [`literal`](Basic.lean) | [`toNat_literal`](ToNat/Basic.lean) |
 
 ## Arithmetic
 
-按需导入 `SMT.BitVec.ToNat.Arithmetic`。
+`import SMT.BitVec.ToNat.Arithmetic`
 
-| 运算 | 桥接定理 |
+| Operation | Bridge |
 | --- | --- |
 | [`bvneg`](Arithmetic.lean) | [`toNat_bvneg`](ToNat/Arithmetic.lean) |
 | [`bvadd`](Arithmetic.lean) | [`toNat_bvadd`](ToNat/Arithmetic.lean) |
@@ -27,9 +27,9 @@ Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。
 
 ## Bitwise
 
-按需导入 `SMT.BitVec.ToNat.Bitwise`。
+`import SMT.BitVec.ToNat.Bitwise`
 
-| 运算 | 桥接定理 |
+| Operation | Bridge |
 | --- | --- |
 | [`bvnot`](Bitwise.lean) | [`toNat_bvnot`](ToNat/Bitwise.lean) |
 | [`bvand`](Bitwise.lean) | [`toNat_bvand`](ToNat/Bitwise.lean) |
@@ -42,9 +42,9 @@ Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。
 
 ## Division
 
-按需导入 `SMT.BitVec.ToNat.Division`。
+`import SMT.BitVec.ToNat.Division`
 
-| 运算 | 桥接定理 |
+| Operation | Bridge |
 | --- | --- |
 | [`bvudiv`](Division.lean) | [`toNat_bvudiv`](ToNat/Division.lean) |
 | [`bvurem`](Division.lean) | [`toNat_bvurem`](ToNat/Division.lean) |
@@ -54,9 +54,9 @@ Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。
 
 ## Shift
 
-按需导入 `SMT.BitVec.ToNat.Shift`。
+`import SMT.BitVec.ToNat.Shift`
 
-| 运算 | 桥接定理 |
+| Operation | Bridge |
 | --- | --- |
 | [`bvshl`](Shift.lean) | [`toNat_bvshl`](ToNat/Shift.lean) |
 | [`bvlshr`](Shift.lean) | [`toNat_bvlshr`](ToNat/Shift.lean) |
@@ -64,9 +64,9 @@ Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。
 
 ## Structure
 
-按需导入 `SMT.BitVec.ToNat.Structure`。
+`import SMT.BitVec.ToNat.Structure`
 
-| 运算 | 桥接定理 |
+| Operation | Bridge |
 | --- | --- |
 | [`concat`](Structure.lean) | [`toNat_concat`](ToNat/Structure.lean) |
 | [`extract`](Structure.lean) | [`toNat_extract`](ToNat/Structure.lean) |
@@ -81,9 +81,9 @@ Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。
 
 ## Comparison
 
-按需导入 `SMT.BitVec.ToNat.Comparison`。
+`import SMT.BitVec.ToNat.Comparison`
 
-| 运算 | 桥接定理 |
+| Operation | Bridge |
 | --- | --- |
 | [`bvult`](Comparison.lean) | [`bvult_toNat`](ToNat/Comparison.lean) |
 | [`bvule`](Comparison.lean) | [`bvule_toNat`](ToNat/Comparison.lean) |
@@ -96,9 +96,9 @@ Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。
 
 ## Overflow
 
-按需导入 `SMT.BitVec.ToNat.Overflow`。
+`import SMT.BitVec.ToNat.Overflow`
 
-| 运算 | 桥接定理 |
+| Operation | Bridge |
 | --- | --- |
 | [`bvnego`](Overflow.lean) | [`bvnego_toNat`](ToNat/Overflow.lean) |
 | [`bvuaddo`](Overflow.lean) | [`bvuaddo_toNat`](ToNat/Overflow.lean) |
@@ -111,18 +111,18 @@ Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。
 
 ## Conversion
 
-按需导入 `SMT.BitVec.ToNat.Conversion`。
+`import SMT.BitVec.ToNat.Conversion`
 
-| 运算 | 桥接定理 |
+| Operation | Bridge |
 | --- | --- |
 | [`ubv_to_int`](Conversion.lean) | [`ubv_to_int_toNat`](ToNat/Conversion.lean) |
 | [`sbv_to_int`](Conversion.lean) | [`sbv_to_int_toNat`](ToNat/Conversion.lean) |
 | [`int_to_bv`](Conversion.lean) | [`toNat_int_to_bv`](ToNat/Conversion.lean) |
 | [`int_to_pbv`](Conversion.lean) | [`toNat_int_to_pbv`](ToNat/Conversion.lean) |
 
-## 重写规则
+## Rewrites
 
-按需 import 以下模块，使用 `rw` 或 `simp only`。
+Import a module and apply its lemmas with `rw` or `simp only`.
 
 ### [Rewrite.Arithmetic](Rewrite/Arithmetic.lean)
 
@@ -152,6 +152,6 @@ Bool 结果的桥接名通常为 `*_toNat`；BV 结果为 `toNat_*`。
 
 `zeroExtend_zero`, `signExtend_zero`, `pzero_extend_zero`, `psign_extend_zero`, `zeroExtend_bvand`, `signExtend_bvand`, `zeroExtend_bvor`, `signExtend_bvor`, `zeroExtend_bvxor`, `signExtend_bvxor`
 
-## Nat 辅助库
+## Nat helpers
 
-Nat 位测试、位运算、掩码和数值辅助定理见 [SMT.Nat 索引](../Nat/INDEX.md)。
+Bit tests, bitwise operations, masks, and numeric lemmas on Nat are in [SMT/Nat](../Nat/).

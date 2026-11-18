@@ -64,10 +64,9 @@ theorem bv_term_small_rw_1246_restricted
     rw [hd, hsquare]
     exact Nat.lt_of_le_of_lt (Nat.mod_le _ _) (Learned.Nat.sq_lt_two_pow_double a)
 
-/- 数学分析：
-n>=2 时去掉最高位不改变平方模 2^n，故平方右移加倍值为零；唯一坏输入是 n=1、s=1。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+For n>=2, dropping the top bit does not change the square mod 2^n, so the shifted doubled value is zero; the only bad input is n=1, s=1.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_1246_iff (n : Nat) (s t : BitVec n) :

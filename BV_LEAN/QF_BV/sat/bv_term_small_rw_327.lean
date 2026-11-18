@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（不同计数右移）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先取 c=L(b,a)，外层计数分别为 ac mod P 与 c；乘法回绕造成的计数改变要经过右移阈值检查。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (right shifts by different counts):
+With c=L(b,a), the outer counts are ac mod P and c; count changes from multiplication wraparound pass through the right-shift threshold.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

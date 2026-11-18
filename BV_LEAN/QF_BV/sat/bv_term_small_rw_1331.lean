@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（商区间补集）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先对 a AND b 按 q=R(a,b) 右移，再与 a 掩码下的 b 右移比较；目标区间同时处理掩码和移位不交换。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (outside a quotient interval):
+a AND b shifted right by q=R(a,b) is compared with the masked right shift of b; the target interval handles masking and shifting not commuting.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

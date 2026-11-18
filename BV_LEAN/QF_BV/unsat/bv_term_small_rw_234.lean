@@ -14,9 +14,9 @@ open SMT.BitVec
 open Learned.BitVec
 open _root_.BitVec (neg_zero)
 
-/- 数学分析：令 b=s<<s。b=0 时两边均为 s；否则 b≥2^s>s，右边为零。
-左边由 (-b).toNat≥n 清零：按 2^s≥n 与 2^s<n 分别使用整除性和半宽上界。
-此论证包含 n=0。-/
+/- Proof sketch: let b=s<<s. If b=0 both sides are s; otherwise b≥2^s>s and the right side is zero.
+The left side is cleared by (-b).toNat≥n, using divisibility when 2^s≥n and the half-range bound when 2^s<n.
+The argument covers n=0. -/
 
 private theorem bvshl_bvneg_bvshl_self (x : BitVec n) :
     bvshl x (bvneg (bvshl x x)) = bvlshr x (bvshl x x) := by

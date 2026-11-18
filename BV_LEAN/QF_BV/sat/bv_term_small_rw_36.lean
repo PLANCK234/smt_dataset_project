@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（右移非零阈值）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-先令 q=(a+b) mod P；原式恰在 a 达到 2^q 时非零。即使 a,b 很大，和回绕后 q 仍可能很小。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (nonzero right-shift threshold):
+Let q=(a+b) mod P; the expression is nonzero iff a reaches 2^q. Large a, b can wrap to a small q.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

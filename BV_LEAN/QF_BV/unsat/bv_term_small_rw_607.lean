@@ -14,11 +14,11 @@ open SMT.BitVec
 open Learned.BitVec
 
 /-
-数学分析：
-令 b = (~s) << s。b 为零时左右移量均为零，结果为 s。
-非零时，令 a = s.toNat。若 n ≤ 2^a，可整除性给出 b.toNat ≥ 2^a ≥ n。
-若 2^a < n，则 (a+1)*2^a ≤ 2^(n-1)，且 b 的值是 2^n-(a+1)*2^a，
-至少为半个数值范围，从而 ≥ n。因此非零分支左右移均为零。
+Proof sketch:
+Let b = (~s) << s. If b = 0 both counts are zero and the result is s.
+Otherwise let a = s.toNat. If n ≤ 2^a, divisibility gives b.toNat ≥ 2^a ≥ n.
+If 2^a < n, then (a+1)*2^a ≤ 2^(n-1) and b.toNat = 2^n-(a+1)*2^a,
+which is at least half the range, hence ≥ n. So both shifts are zero.
 -/
 
 theorem bv_term_small_rw_607 :

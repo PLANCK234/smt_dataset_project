@@ -1,6 +1,12 @@
 /-
 Released under Apache 2.0; see THIRD_PARTY_LICENSES/Apache-2.0.txt.
 Local mathematical derivations for the SAT solution sets.
+
+Notation used by the per-benchmark analyses in `sat/`:
+P = 2^n, a = s.toNat, b = t.toNat (so a, b < P), L n a q = (a * 2^min(n,q)) mod P,
+and R n a q = a / 2^min(n,q). Each benchmark proves `_iff` (the negated equality holds
+iff a BitVec-free `_condition` holds) and `_solutions_iff` (every bounded natural solution
+comes from a BitVec input), plus a kernel-checked width-32 witness `_sat32`.
 -/
 import LEMMAS_learned.BitVec.Shift.Characterization
 import SMT.BitVec.ToNat

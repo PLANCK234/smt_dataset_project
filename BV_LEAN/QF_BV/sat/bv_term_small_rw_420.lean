@@ -11,12 +11,8 @@ set_option linter.unusedVariables false
 namespace BV.QF_BV.Sat
 open SMT.BitVec
 
-/- 数学分析（不同计数右移）：
-令 P=2^n、a=s.toNat、b=t.toNat，0≤a,b<P。
-L n a q=(a*2^min(n,q)) mod P，R n a q=floor(a/2^min(n,q))。
-两个计数分别是 b 与 L(a,a) 的交集、a 与 R(b,a) 的交集；AND 产生的小计数仍须通过外层阈值。
-下列 condition 不含 BitVec；solutions 同时约束输入范围。
-_iff 证明必要性与充分性；_solutions_iff 证明每个自然数解都能重建原始输入。
+/- Analysis (right shifts by different counts):
+The counts are b AND L(a,a) and a AND R(b,a); small AND counts still pass through the outer threshold.
 -/
 
 /-- The original negated equality, generalized from width 32 to every n, including zero. -/

@@ -53,10 +53,9 @@ theorem bv_term_small_rw_380_width_restricted
     have hh := bvshl_bvnot_self_ne_top_of_pow_width n k hw t
     simpa only [toNat_bvshl, toNat_bvnot] using hh
 
-/- 数学分析：
-外层 s=0 总成立；s 非零时，充要条件是 t<<~t 不仅剩最高位。位宽统一条件同 296/298/379。
-输入与全输入位宽的充要条件分别见 `_iff`、`_width_iff`。
-进一步的位宽算术判据与待形式化部分见 ../EXACT_CONDITIONS.md。
+/- Analysis:
+The identity holds for s=0. For s≠0 it holds iff t<<~t is not just the top bit. The width condition is shared with 296/298/379.
+Exact conditions: `_iff` per input, `_width_iff` per width; see ../EXACT_CONDITIONS.md.
 -/
 
 theorem bv_term_small_rw_380_iff (n : Nat) (s t : BitVec n) :

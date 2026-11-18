@@ -14,11 +14,11 @@ open SMT.BitVec
 open Learned.BitVec
 
 /-
-数学分析：
-令 a = s.toNat，b = t << s。b = 0 时两边都是 s << s。
-若 b ≠ 0，由 2^a 整除 b.toNat 得 b.toNat ≥ 2^a > a，所以 s >> b = 0。
-另一方面，(s << s).toNat ≤ a*2^a < 2^(2a)，且 2a ≤ 2^a ≤ b.toNat，
-故 (s << s).toNat < 2^(b.toNat)，右侧也为零。
+Proof sketch:
+Let a = s.toNat and b = t << s. If b = 0 both sides are s << s.
+If b ≠ 0, 2^a divides b.toNat, so b.toNat ≥ 2^a > a and s >> b = 0.
+Also (s << s).toNat ≤ a*2^a < 2^(2a) and 2a ≤ 2^a ≤ b.toNat,
+so (s << s).toNat < 2^(b.toNat) and the right side is zero.
 -/
 
 theorem bv_term_small_rw_1491 :
